@@ -1,0 +1,12 @@
+<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin</title>
+<body style="background:#050505;color:#eee;font-family:system-ui;padding:1rem;max-width:560px;margin:auto">
+<h2>Admin</h2><input id="pw" type="password" placeholder="Admin password" style="width:100%;padding:.6rem"><button onclick="load()" style="padding:.6rem;margin:.5rem 0">Load pending payments</button>
+<p style="opacity:.6;font-size:.85rem">Approve only after you see the same UTR and amount in your bank/Paytm statement.</p><div id="l"></div><hr>
+<input id="ph" placeholder="User phone" style="padding:.6rem"> <input id="am" type="number" placeholder="Amount" style="padding:.6rem;width:7rem">
+<button onclick="u({add:+am.value})">Add funds</button> <button onclick="u({freeze:true})">Freeze</button> <button onclick="u({freeze:false})">Unfreeze</button><pre id="o"></pre>
+<script>
+const H=()=>({'content-type':'application/json','x-admin':pw.value}),P=(p,b)=>fetch('/api/admin'+p,{method:'POST',headers:H(),body:JSON.stringify(b)}).then(r=>r.json())
+async function load(){const r=await fetch('/api/admin/pending',{headers:H()});const j=await r.json();l.innerHTML=r.ok?(j.map(t=>`<p>#${t.id} · ${t.phone} · ₹${t.amount} · UTR ${t.utr} <button onclick="d(${t.id},1)">Approve</button> <button onclick="d(${t.id},0)">Reject</button></p>`).join('')||'No pending payments'):'Wrong password'}
+async function d(id,a){await P('/txn',{id,approve:!!a});load()}
+async function u(b){o.textContent=JSON.stringify(await P('/user',{phone:ph.value,...b}))}
+</script></body>

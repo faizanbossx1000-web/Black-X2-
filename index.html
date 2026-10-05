@@ -1,0 +1,132 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Black ★ Universe ∞ flex ♪</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{background:#050505;color:#e8ecff;margin:0;font-family:system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+.glass{backdrop-filter:blur(40px);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:1rem}
+.neon{box-shadow:0 0 18px rgba(0,243,255,.35)}
+.bolt{position:relative;overflow:hidden}
+.bolt::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,rgba(0,243,255,.45) 50%,transparent 60%);transform:translateX(-120%);animation:zap 3.2s infinite;pointer-events:none}
+@keyframes zap{60%,100%{transform:translateX(120%)}}
+.strobe{animation:st .25s 8}@keyframes st{50%{background:#ff0022}}
+input,select,textarea{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:.75rem;padding:.6rem .8rem;width:100%;color:#fff;outline:none;box-sizing:border-box}
+select option{background:#111}
+input:focus,textarea:focus{border-color:#00f3ff}
+.btn{border-radius:.75rem;padding:.65rem 1rem;font-weight:600;background:linear-gradient(90deg,#00f3ff33,#9d4edd33);border:1px solid #00f3ff66;color:#fff;text-align:center;display:block}
+.btn:disabled{opacity:.4}
+.card{user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.card.hold{box-shadow:0 0 22px #00f3ff;transform:scale(.96)}
+</style></head><body>
+<div id="app" style="min-height:100vh;padding-bottom:5.5rem">
+<header class="glass" style="border-radius:0;position:sticky;top:0;z-index:30;padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center">
+<b id="logo" class="text-cyan-300" style="text-shadow:0 0 8px #00f3ff">Black ★ Universe ∞ flex ♪</b><span id="bal" class="glass text-emerald-300 text-sm" style="padding:.2rem .7rem"></span></header>
+<main id="main" class="p-4 max-w-xl mx-auto space-y-4"></main>
+<p class="text-center text-xs text-violet-300" style="opacity:.7">Created by Faizan Boss ♣ ∞</p></div>
+<div id="toast" class="glass neon text-center p-3" style="position:fixed;top:4rem;left:1rem;right:1rem;z-index:60;display:none"></div>
+<div id="modal" style="position:fixed;inset:0;z-index:55;background:rgba(0,0,0,.85);display:none;place-items:center"></div>
+<nav id="nav" class="glass" style="border-radius:0;position:fixed;bottom:0;left:0;right:0;z-index:40;display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom,0px)"></nav>
+<script>
+const WA='917017137492',UPI='6398287578@pthdfc',NAME='Najma';
+const RATES={Views:[10000,10],Followers:[100,20],Likes:[100,10],Comments:[100,20],Shares:[250,10],Saves:[100,10],Reposts:[200,10],'Story Views':[100,10]};
+const ITEMS=[{id:1,n:'CapCut Pro APK',p:49},{id:2,n:'Cinematic LUT Pack',p:79},{id:3,n:'Reel Preset Bundle',p:59},{id:4,n:'VN Template Clips',p:39}];
+const STAGES=['Pending','Dispatching','Processing','Completed'];
+const LINES={welcome:'Welcome Faizan Boss ke universe mein!',smm:'Apna link paste kijiye, hum check kar rahe hain ki account public hai ya private.',wallet:'Diye gaye QR code ko scan karke payment karein aur 12-digit UTR submit karein.',fraud:'Yeh UTR pehle use ho chuka hai ya invalid hai, kripya sahi detail dalein.',verify:'Sir wait karein, link verify ho raha hai.',vvip:'Teen items! VVIP discount laga diya gaya.',spam:'Itni tezi se click mat karo, sheesha toot jayega!',big:'Woaah! Itna bada order!'};
+const ld=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??d}catch{return d}};
+const sv=()=>{try{localStorage.setItem('bu',JSON.stringify({bal:S.bal,orders:S.orders,txns:S.txns}))}catch{}};
+const S=Object.assign({tab:'SMM',bal:100,orders:[],txns:[],cart:[],svc:'Views',link:'',info:null,sound:true,voice:true},ld('bu',{}));
+const $=s=>document.querySelector(s);
+/* audio + voice */
+let ac;function sfx(t){if(!S.sound)return;try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const c=ac,n=c.currentTime;
+const tone=(ty,a,b,d)=>{const o=c.createOscillator(),g=c.createGain();o.type=ty;o.frequency.setValueAtTime(a,n);o.frequency.exponentialRampToValueAtTime(b,n+d);g.gain.setValueAtTime(.25,n);g.gain.exponentialRampToValueAtTime(.001,n+d);o.connect(g);g.connect(c.destination);o.start(n);o.stop(n+d)};
+const noise=(d,hp)=>{const b=c.createBuffer(1,c.sampleRate*d,c.sampleRate),x=b.getChannelData(0);for(let i=0;i<x.length;i++)x[i]=(Math.random()*2-1)*(1-i/x.length);const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=b;f.type='highpass';f.frequency.value=hp;g.gain.value=.3;s.connect(f);f.connect(g);g.connect(c.destination);s.start(n)};
+if(t=='tap')tone('square',1800,600,.04);if(t=='glass'){noise(.5,3500);tone('triangle',4200,1200,.3)}
+if(t=='thunder'){noise(.9,80);tone('sawtooth',900,40,.5)}
+if(t=='alarm'){[0,1,2,3].forEach(i=>setTimeout(()=>tone('square',i%2?600:900,i%2?600.1:900.1,.15),i*160));navigator.vibrate&&navigator.vibrate([200,100,200])}}catch{}}
+function speak(t){if(!S.voice||!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='hi-IN';u.pitch=1.15;u.rate=.9;const v=speechSynthesis.getVoices().find(x=>x.lang=='hi-IN');if(v)u.voice=v;speechSynthesis.speak(u)}
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.i);toast.i=setTimeout(()=>t.style.display='none',2800)}
+function fraud(){sfx('alarm');speak(LINES.fraud);document.body.classList.add('strobe');setTimeout(()=>document.body.classList.remove('strobe'),2100);toast('Invalid or duplicate UTR. Enter the 12-digit UTR from your payment app.')}
+function detect(u){try{const x=new URL(u),h=x.hostname.replace('www.',''),p=x.pathname;const pf=h.includes('instagram')?'Instagram':h.includes('youtu')?'YouTube':h.includes('tiktok')?'TikTok':h.includes('t.me')?'Telegram':h.includes('facebook')?'Facebook':null;if(!pf)return null;
+const type=/\/reel/.test(p)?'Reel':/\/stories/.test(p)?'Story':/\/shorts/.test(p)?'Short':(/\/(p|watch|video)/.test(p)||x.search.includes('v='))?'Post / Video':/\/(channel|c|@)/.test(p)?'Channel':'Profile';return{pf,type}}catch{return null}}
+/* views */
+const cost=(s,q)=>+(q/RATES[s][0]*RATES[s][1]).toFixed(2);
+const cs=()=>S.cart.reduce((a,id)=>a+ITEMS.find(i=>i.id==id).p,0);
+const prog=o=>Math.min(100,(Date.now()-o.t)/600);
+const stg=o=>{const p=prog(o);return p>=100?3:p>50?2:p>10?1:0};
+const V={
+SMM:()=>`<section class="glass neon p-4 space-y-3"><h2 class="text-lg font-bold">SMM Dashboard</h2>
+<select id="svc">${Object.keys(RATES).map(k=>`<option ${k==S.svc?'selected':''}>${k}</option>`).join('')}</select>
+<input id="qty" type="number" min="1" value="${RATES[S.svc][0]}">
+<div class="flex gap-2"><input id="link" placeholder="Paste Instagram / YouTube / TikTok link" value="${S.link}"><button id="vb" class="btn bolt" data-a="verify">Verify</button></div>
+<div id="vinfo">${vinfo()}</div><p class="text-2xl text-emerald-300">Total ₹<span id="tot">${cost(S.svc,RATES[S.svc][0])}</span></p>
+<button class="btn bolt w-full" data-a="buy">Buy Now</button></section>`,
+Store:()=>{const sub=cs(),d=S.cart.length>=3?sub*.15:0;return`<section class="space-y-3"><div class="flex justify-between"><h2 class="text-lg font-bold">Asset Store</h2><button class="btn" data-a="cart">Cart (${S.cart.length})</button></div>
+<p class="text-xs" style="opacity:.5">Hold 1s to add · hold 3s to preview</p><div class="grid grid-cols-2 gap-3">${ITEMS.map(i=>`<div class="glass card p-3" data-id="${i.id}"><div style="aspect-ratio:1;border-radius:.6rem;background:linear-gradient(135deg,#7c3aed55,#10b98133);margin-bottom:.5rem"></div><b class="text-sm">${i.n}</b><p class="text-emerald-300">₹${i.p}</p></div>`).join('')}</div></section>`},
+Orders:()=>{const c=S.orders[0];return`<section class="space-y-3"><h2 class="text-lg font-bold">Order Tracker</h2>${c?`<div class="glass neon p-4 text-center"><svg viewBox="0 0 120 120" style="width:10rem;margin:auto;display:block"><circle cx="60" cy="60" r="52" stroke="#222" stroke-width="10" fill="none"/><circle cx="60" cy="60" r="52" stroke="#00f3ff" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="${327*(1-prog(c)/100)}" transform="rotate(-90 60 60)"/><text x="60" y="66" text-anchor="middle" fill="#fff" font-size="22">${Math.floor(prog(c))}%</text></svg>
+<p class="text-sm">Delivered ${Math.floor(c.qty*prog(c)/100)} / ${c.qty}</p><div class="flex gap-1 mt-3">${STAGES.map((s,i)=>`<div class="flex-1 text-xs py-1 rounded ${i<=stg(c)?'bg-cyan-400/30 text-cyan-200':'bg-white/5 text-white/40'}">${s}</div>`).join('')}</div>
+<div class="flex gap-2 mt-3"><a class="btn flex-1" target="_blank" href="https://wa.me/${WA}?text=${encodeURIComponent('Refill '+c.id)}">Refill</a><a class="btn flex-1" target="_blank" href="https://wa.me/${WA}?text=${encodeURIComponent('Report order '+c.id)}">Report</a></div></div>`:'<p class="text-center" style="opacity:.5">No orders yet. Place one from SMM.</p>'}
+${S.orders.map(o=>`<div class="glass p-3 text-sm flex justify-between"><span>${o.id} · ${o.service} ×${o.qty}</span><span>${STAGES[stg(o)]}</span></div>`).join('')}</section>`},
+Wallet:()=>`<section class="space-y-3"><div class="glass neon p-4 text-center space-y-3"><h2 class="font-bold">Add funds · ${NAME}</h2><div id="qr" style="background:#fff;padding:12px;border-radius:12px;display:inline-block"></div><p class="text-sm">${UPI}</p>
+<input id="amt" type="number" value="100" min="1"><div class="grid grid-cols-2 gap-2"><a class="btn upi">Open Paytm</a><a class="btn upi">Open PhonePe</a><a class="btn upi">Open GPay</a><button class="btn" data-a="copy">Copy UPI ID</button></div></div>
+<div class="glass p-4 space-y-2"><input id="utr" inputmode="numeric" maxlength="12" placeholder="12-digit UTR"><button class="btn bolt w-full" data-a="utr">Submit UTR</button></div>
+${S.txns.map(t=>`<div class="glass p-3 text-sm flex justify-between"><span>${t.utr} · ₹${t.amt}</span><span class="text-amber-300">${t.status}</span></div>`).join('')}</section>`,
+Support:()=>`<section class="space-y-3"><div class="glass p-4 space-y-2"><h2 class="font-bold">Support Desk</h2><div class="flex flex-wrap gap-2">${['Payment Pending','Order Drop / Refill','Speed Boost','Cancel Order','API Integration Help'].map(c=>`<button class="btn text-xs" data-a="chip" data-c="${c}">${c}</button>`).join('')}</div><textarea id="msg" rows="4"></textarea><button class="btn w-full" data-a="send">Send on WhatsApp</button></div>
+<div class="glass p-4 space-y-2"><h2 class="font-bold">Referral · 5% commission</h2><p class="text-sm break-all">${location.origin}/?ref=${ref()}</p><button class="btn" data-a="refcopy">Copy link</button></div>
+<div class="glass p-4 text-center space-y-2"><h2 class="font-bold">Slot of Luck</h2><div id="reel" class="text-4xl">🎰</div><button class="btn bolt w-full" data-a="spin">Spin (once daily)</button></div>
+<a class="block text-center text-pink-400" target="_blank" href="https://instagram.com/faizan_ssa">Instagram · faizan_ssa</a></section>`};
+function ref(){let r=ld('ref',null);if(!r){r=Math.random().toString(36).slice(2,8);try{localStorage.setItem('ref',JSON.stringify(r))}catch{}}return r}
+function vinfo(){const i=S.info;if(!i)return'';if(i=='bad')return'<p class="text-red-400">Invalid or unsupported link.</p>';return`<div class="glass p-3 text-sm space-y-1"><div class="animate-pulse grid place-items-center" style="aspect-ratio:16/9;border-radius:.6rem;background:linear-gradient(135deg,#6d28d966,#06b6d433)">▶ ${i.pf} ${i.type} preview (demo)</div><p>Type: <b>${i.type}</b> · Link format: <span class="text-emerald-300">valid</span></p></div>`}
+function render(){$('#bal').textContent='₹'+S.bal.toFixed(2);$('#main').innerHTML=V[S.tab]();
+$('#nav').innerHTML=Object.keys(V).map(t=>`<button data-t="${t}" style="padding:.8rem 0;font-size:.85rem;background:none;border:0;color:${t==S.tab?'#67e8f9':'rgba(255,255,255,.6)'};${t==S.tab?'text-shadow:0 0 8px #00f3ff':''}">${t}</button>`).join('');
+if(S.tab=='Wallet')qr();bind()}
+function qr(){const a=+($('#amt')||{value:100}).value||100;$('#qr').innerHTML='';try{new QRCode($('#qr'),{text:`upi://pay?pa=${UPI}&pn=${NAME}&am=${a}&cu=INR`,width:180,height:180})}catch{}$('.upi').parentNode.querySelectorAll('.upi').forEach(x=>x.href=`upi://pay?pa=${UPI}&pn=${NAME}&am=${a}&cu=INR`)}
+function go(t){sfx('glass');S.tab=t;render();if(t=='SMM')speak(LINES.smm);if(t=='Wallet')speak(LINES.wallet)}
+function bind(){const q=$('#qty');if(q){const up=()=>{S.svc=$('#svc').value;$('#tot').textContent=cost(S.svc,+$('#qty').value||0)};q.oninput=up;$('#svc').onchange=()=>{S.svc=$('#svc').value;$('#qty').value=RATES[S.svc][0];up();};$('#link').oninput=e=>{S.link=e.target.value;S.info=null;$('#vinfo').innerHTML=''}}
+const a=$('#amt');if(a)a.oninput=qr;const u=$('#utr');if(u)u.oninput=()=>u.value=u.value.replace(/\D/g,'')}
+/* store holds */
+let h1,h2;
+document.addEventListener('pointerdown',e=>{sfx('tap');const n=Date.now();(window.ck=(window.ck||[]).filter(t=>n-t<1200)).push(n);if(ck.length>=8){speak(LINES.spam);ck=[]}
+const c=e.target.closest('.card');if(!c)return;const it=ITEMS.find(i=>i.id==c.dataset.id);c.classList.add('hold');
+h1=setTimeout(()=>{S.cart.push(it.id);sfx('thunder');navigator.vibrate&&navigator.vibrate(80);toast(it.n+' added');c.classList.remove('hold');if(S.cart.length==3){sfx('glass');speak(LINES.vvip)};render()},1000);
+h2=setTimeout(()=>{modal(`<div class="glass neon p-6 text-center">▶ 10s preview: ${it.n}<p class="text-xs mt-2" style="opacity:.5">Tap to close</p></div>`);setTimeout(()=>$('#modal').style.display='none',10000)},3000)});
+['pointerup','pointerleave','pointercancel'].forEach(ev=>document.addEventListener(ev,()=>{clearTimeout(h1);clearTimeout(h2);document.querySelectorAll('.hold').forEach(x=>x.classList.remove('hold'))}));
+document.addEventListener('contextmenu',e=>{if(e.target.closest('.card'))e.preventDefault()});
+function modal(h){const m=$('#modal');m.innerHTML=h;m.style.display='grid';m.onclick=e=>{if(!e.target.closest('[data-keep]'))m.style.display='none'}}
+function cartView(){const s=cs(),d=S.cart.length>=3?s*.15:0;modal(`<div data-keep class="glass neon p-4 space-y-2" style="width:18rem;background:#0a0a0a"><h3 class="font-bold">Cart</h3>${S.cart.map((id,i)=>`<div class="flex justify-between text-sm"><span>${ITEMS.find(x=>x.id==id).n}</span><button data-a="rm" data-i="${i}" class="text-red-400">remove</button></div>`).join('')||'<p class="text-sm" style="opacity:.5">Cart is empty. Hold a card for 1 second to add it.</p>'}<p>Subtotal ₹${s}</p>${d?`<p class="text-emerald-300">VVIP −15%: −₹${d.toFixed(2)}</p>`:''}<p class="text-xl">₹${(s-d).toFixed(2)}</p><button class="btn w-full" data-a="pay">Checkout</button><button class="btn w-full" data-a="close">Close</button></div>`)}
+/* actions */
+document.addEventListener('click',e=>{const t=e.target.closest('[data-t]');if(t)return go(t.dataset.t);const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
+if(a=='verify'){if(!S.link)return toast('Paste a link first');speak(LINES.verify);let w=5;b.disabled=true;b.textContent=w;const iv=setInterval(()=>{b.textContent=--w;if(w<=0){clearInterval(iv);const d=detect(S.link);S.info=d||'bad';if(!d)sfx('glass');b.disabled=false;b.textContent='Verify';$('#vinfo').innerHTML=vinfo()}},1000)}
+if(a=='buy'){const q=+$('#qty').value,c=cost(S.svc,q);if(!S.info||S.info=='bad')return toast('Verify a valid link first');if(c>S.bal)return toast('Low balance. Add funds in Wallet.');if(q>=100000)speak(LINES.big);sfx('thunder');
+const id='BU'+Date.now().toString().slice(-6);S.bal=+(S.bal-c).toFixed(2);S.orders.unshift({id,service:S.svc,qty:q,cost:c,t:Date.now()});sv();
+window.open(`https://wa.me/${WA}?text=${encodeURIComponent(`*New Order ${id}*\nService: ${S.svc}\nQty: ${q}\nCost: ₹${c}\nBalance left: ₹${S.bal}\nLink: ${S.link}\nTime: ${new Date().toLocaleString()}`)}`,'_blank');go('Orders')}
+if(a=='cart')cartView();if(a=='close')$('#modal').style.display='none';if(a=='rm'){S.cart.splice(+b.dataset.i,1);cartView();render()}
+if(a=='pay'){const s=cs(),t=s-(S.cart.length>=3?s*.15:0);if(!S.cart.length)return;if(t>S.bal)return toast('Low balance');S.bal=+(S.bal-t).toFixed(2);S.cart=[];sv();sfx('thunder');$('#modal').style.display='none';toast('Paid. Download token: '+Math.random().toString(36).slice(2,10).toUpperCase());render()}
+if(a=='copy'){navigator.clipboard&&navigator.clipboard.writeText(UPI);toast('UPI ID copied')}
+if(a=='utr'){const u=$('#utr').value,am=+$('#amt').value;if(!/^\d{12}$/.test(u)||S.txns.some(x=>x.utr==u)||am<1)return fraud();S.txns.unshift({utr:u,amt:am,status:'Pending',t:Date.now()});sv();sfx('thunder');toast('Submitted. Balance is credited after admin approval.');render()}
+if(a=='chip'){const m={'Payment Pending':'My payment is pending. UTR: ','Order Drop / Refill':'My order dropped, please refill. Order ID: ','Speed Boost':'Please speed up my order. Order ID: ','Cancel Order':'Please cancel my order. Order ID: ','API Integration Help':'I need help with API integration.'};$('#msg').value=m[b.dataset.c]}
+if(a=='send')window.open(`https://wa.me/${WA}?text=${encodeURIComponent($('#msg').value)}`,'_blank');
+if(a=='refcopy'){navigator.clipboard&&navigator.clipboard.writeText(`${location.origin}/?ref=${ref()}`);toast('Link copied')}
+if(a=='spin'){if(ld('spin','')==new Date().toDateString())return toast('Come back tomorrow for another spin');sfx('thunder');let n=0;const r=$('#reel'),iv=setInterval(()=>{r.textContent=1+Math.floor(Math.random()*3);if(++n>15){clearInterval(iv);const w=1+Math.floor(Math.random()*3);r.textContent='+₹'+w;S.bal+=w;sv();try{localStorage.setItem('spin',JSON.stringify(new Date().toDateString()))}catch{};$('#bal').textContent='₹'+S.bal.toFixed(2)}},100)}});
+$('#logo').onclick=()=>{speak(LINES.welcome);toast('Welcome to the universe ♪')};
+setInterval(()=>{if(S.tab=='Orders')$('#main').innerHTML=V.Orders()},1000);
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))try{}catch{}
+render();
+</script><script>
+const API=async(p,b)=>{const r=await fetch('/api'+p,{method:b?'POST':'GET',headers:{'content-type':'application/json','x-token':localStorage.getItem('tk')||''},body:b?JSON.stringify(b):undefined});const j=await r.json().catch(()=>({}));if(r.status==401&&p!='/login'&&p!='/signup'){authUI();throw{}}if(!r.ok)throw j;return j};
+async function sync(){const m=await API('/me');S.bal=m.balance;S.orders=m.orders;S.txns=m.txns;S.frozen=m.user.frozen;render()}
+function authUI(){modal(`<div data-keep class="glass neon p-4 space-y-2" style="width:18rem;background:#0a0a0a"><h3 class="font-bold">Login or create account</h3><input id="ph" inputmode="numeric" maxlength="10" placeholder="10-digit phone"><input id="nm" placeholder="Name (new accounts)"><input id="pw" type="password" placeholder="Password (6+ characters)"><button class="btn w-full" data-a="login">Login</button><button class="btn w-full" data-a="signup">Create account</button></div>`)}
+const P=[5,30,65,100];
+V.Orders=()=>{const c=S.orders[0],pr=o=>P[o.status]||5;return`<section class="space-y-3"><h2 class="text-lg font-bold">Order Tracker</h2>${c?`<div class="glass neon p-4 text-center"><svg viewBox="0 0 120 120" style="width:10rem;margin:auto;display:block"><circle cx="60" cy="60" r="52" stroke="#222" stroke-width="10" fill="none"/><circle cx="60" cy="60" r="52" stroke="#00f3ff" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="${327*(1-pr(c)/100)}" transform="rotate(-90 60 60)"/><text x="60" y="66" text-anchor="middle" fill="#fff" font-size="22">${pr(c)}%</text></svg><p class="text-sm">${c.service} ×${c.qty} · ${c.id.toString().startsWith('BU')?c.id:'BU'+c.id}</p><div class="flex gap-1 mt-3">${STAGES.map((s,i)=>`<div class="flex-1 text-xs py-1 rounded ${i<=c.status?'bg-cyan-400/30 text-cyan-200':'bg-white/5 text-white/40'}">${s}</div>`).join('')}</div><div class="flex gap-2 mt-3"><a class="btn flex-1" target="_blank" href="https://wa.me/${WA}?text=${encodeURIComponent('Refill BU'+c.id)}">Refill</a><a class="btn flex-1" target="_blank" href="https://wa.me/${WA}?text=${encodeURIComponent('Report order BU'+c.id)}">Report</a></div></div>`:'<p class="text-center" style="opacity:.5">No orders yet. Place one from SMM.</p>'}${S.orders.map(o=>`<div class="glass p-3 text-sm flex justify-between"><span>BU${o.id} · ${o.service} ×${o.qty}</span><span>${STAGES[o.status]}</span></div>`).join('')}</section>`};
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;if(!['buy','utr','spin','pay','login','signup'].includes(a))return;e.stopImmediatePropagation();
+try{
+if(a=='login'||a=='signup'){const r=await API('/'+a,{phone:$('#ph').value,password:$('#pw').value,name:$('#nm').value});localStorage.setItem('tk',r.token);$('#modal').style.display='none';await sync()}
+if(a=='buy'){const q=+$('#qty').value;if(!S.info||S.info=='bad')return toast('Verify a valid link first');const r=await API('/order',{service:S.svc,qty:q,link:S.link});sfx('thunder');await sync();window.open(`https://wa.me/${WA}?text=${encodeURIComponent(`*New Order ${r.id}*\nService: ${S.svc}\nQty: ${q}\nCost: ₹${cost(S.svc,q)}\nBalance left: ₹${r.balance}\nLink: ${S.link}\nTime: ${new Date().toLocaleString()}`)}`,'_blank');go('Orders')}
+if(a=='utr'){await API('/utr',{utr:$('#utr').value,amount:+$('#amt').value});sfx('thunder');toast('Submitted. Balance is credited after admin approval.');await sync()}
+if(a=='spin'){const r=await API('/spin',{});sfx('thunder');$('#reel').textContent='+₹'+r.win;await sync();$('#reel')&&($('#reel').textContent='+₹'+r.win)}
+if(a=='pay'){const r=await API('/assets',{ids:S.cart});S.cart=[];$('#modal').style.display='none';sfx('thunder');toast('Paid ₹'+r.total+'. Download token: '+r.token);await sync()}
+}catch(x){if(x.fraud)fraud();else if(x.error)toast(x.error)}},true);
+localStorage.getItem('tk')?sync().catch(()=>{}):authUI();
+setInterval(()=>{if(S.tab=='Orders'&&localStorage.getItem('tk'))sync().catch(()=>{})},20000);
+</script></body></html>
